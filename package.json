@@ -1,0 +1,27 @@
+{
+  "name": "hypejournal",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "client": "npm start --prefix client",
+    "server": "nodemon server/index.js",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/seanmcgon/HypeJournal.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/seanmcgon/HypeJournal/issues"
+  },
+  "homepage": "https://github.com/seanmcgon/HypeJournal#readme",
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}
