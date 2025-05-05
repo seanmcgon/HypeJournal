@@ -31,6 +31,7 @@ export default function Login({setName}) {
       }}
       useOneTap
       auto_select
+      shape="pill"
     />
   );
 }
