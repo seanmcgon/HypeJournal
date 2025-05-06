@@ -1,16 +1,41 @@
 import { useState } from "react";
 
-export default function TaskInput() {
+export default function TaskInput({ setResponse }) {
   const [task, setTask] = useState("");
 
   const handleChange = (e) => {
     setTask(e.target.value);
   };
 
-  function submitTask(e) {
+  async function submitTask(e) {
     e.preventDefault();
     if (task === "") return;
-    //TODO: submit to Mistral and log in db
+    setResponse("");
+
+    try {
+      const response = await fetch("/api/task", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ task: task }),
+      });
+      if (!response.ok) {
+        throw new Error(`Response status: ${response.status}`);
+      }
+
+      const json = await response.json();
+      const letters = json.message.split("");
+      letters.forEach((_, index) => {
+        setTimeout(() => {
+          setResponse(json.message.slice(0, index + 1));
+        }, 10 * index);
+      });
+    } catch (error) {
+      console.error(error.message);
+    }
+
+    //TODO: log in db, and maybe display a spinning wheel while Mistral is responding!
     setTask("");
   }
 
@@ -26,7 +51,7 @@ export default function TaskInput() {
         onChange={handleChange}
         value={task}
         autoComplete="off"
-        className="w-full border bg-gray-500 rounded-md p-3 text-white placeholder-white focus:outline-none focus:ring-2 focus:ring-red-600"
+        className="w-full border bg-gray-500 rounded-md p-3 text-white placeholder-white focus:outline-none focus:ring-2 focus:ring-fuchsia-500"
       />
       <div
         className={`mt-2 text-sm ${

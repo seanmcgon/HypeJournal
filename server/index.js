@@ -1,12 +1,15 @@
+require("dotenv").config({ path: __dirname + "/.env" });
 const express = require("express");
 const cors = require("cors");
-require("dotenv").config();
 const { OAuth2Client } = require("google-auth-library");
+const { Mistral } = require("@mistralai/mistralai");
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+const apiKey = process.env.MISTRAL_API_KEY;
+const mistralClient = new Mistral({ apiKey: apiKey });
 
 app.post("/api/auth/google", async (req, res) => {
   const { token } = req.body;
@@ -33,6 +36,36 @@ app.post("/api/auth/google", async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(401).json({ error: "Invalid Google token" });
+  }
+});
+
+app.post("/api/task", async (req, res) => {
+  const { task } = req.body;
+
+  try {
+    const chatResponse = await mistralClient.chat.complete({
+      model: "mistral-large-latest",
+      messages: [
+        {
+          role: "system",
+          content: `The user will submit a short description of something they accomplished today. Your job is to respond like a 
+            hype-man-frat-bro, who celebrates the accomplishment in an overkill way no matter how small/trivial the task was. 
+            Keep you response to 1-2 sentences, and feel free to mix in some swear words. For example, if the user says 
+            'Did my laundry', you could respond like 'Let's goooooo, you fucking demolished that laundry!!!'`,
+        },
+        { role: "user", content: task },
+      ],
+    });
+
+    res.json({
+      message: chatResponse.choices[0].message.content,
+    });
+    // res.json({
+    //   message: "Hell yeah, you did! That's fucking awesome, you grabbed life by the handlebars and rode that bitch! Let's fucking goooooo!!! This is a test to check long responses",
+    // });
+  } catch (err) {
+    console.error(err);
+    res.status(401).json({ error: "Error getting AI response" });
   }
 });
 
