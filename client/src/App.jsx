@@ -13,7 +13,7 @@ function App() {
     <>
       <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
         <div className="App min-h-screen bg-gray-900 p-10 flex flex-col items-center min-w-screen">
-          <h1 className="text-5xl font-bold text-red-600 mb-6 text-shadow-md/50 text-shadow-fuchsia-500">
+          <h1 className="text-5xl font-bold text-fuchsia-500 mb-6 text-shadow-md/60 text-shadow-sky-500">
             HypeJournal
           </h1>
           <div className="flex flex-col items-center justify-center p-4 min-w-screen">

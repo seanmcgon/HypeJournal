@@ -4,7 +4,7 @@ export default function HypeResponse({ response }) {
   return (
     <div className="w-full max-w-lg pt-6">
       <BorderRevealBox>
-        <div className="relative z-10 text-white font-bold">{response}</div>
+        <div className="relative z-10 text-white font-bold text-center text-xl">{response}</div>
       </BorderRevealBox>
     </div>
   );

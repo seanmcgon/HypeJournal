@@ -62,7 +62,7 @@ export default function TaskInput({ setResponse }) {
       </div>
       <button
         type="submit"
-        className="mt-3 bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-400 transition duration-200"
+        className="mt-3 bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-400 transition duration-200 active:bg-gray-600"
       >
         Submit
       </button>
