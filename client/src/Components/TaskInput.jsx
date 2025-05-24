@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default function TaskInput({ setResponse }) {
+export default function TaskInput({ setResponse, email, setLogs, setLoading }) {
   const [task, setTask] = useState("");
 
   const handleChange = (e) => {
@@ -10,7 +10,10 @@ export default function TaskInput({ setResponse }) {
   async function submitTask(e) {
     e.preventDefault();
     if (task === "") return;
+    const temp = task;
+    setTask("");
     setResponse("");
+    setLoading(true);
 
     try {
       const response = await fetch("/api/task", {
@@ -18,13 +21,15 @@ export default function TaskInput({ setResponse }) {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ task: task }),
+        body: JSON.stringify({ task: temp, email: email }),
       });
       if (!response.ok) {
         throw new Error(`Response status: ${response.status}`);
       }
 
       const json = await response.json();
+      setLogs(json.logs);
+      setLoading(false);
       const letters = json.message.split("");
       letters.forEach((_, index) => {
         setTimeout(() => {
@@ -33,10 +38,7 @@ export default function TaskInput({ setResponse }) {
       });
     } catch (error) {
       console.error(error.message);
-    }
-
-    //TODO: log in db, and maybe display a spinning wheel while Mistral is responding!
-    setTask("");
+    }    
   }
 
   return (

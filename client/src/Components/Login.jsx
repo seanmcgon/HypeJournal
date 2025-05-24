@@ -1,6 +1,6 @@
 import { GoogleLogin } from "@react-oauth/google";
 
-async function login(token, setName) {
+async function login(token, setName, setEmail, setLogs) {
   try {
     const response = await fetch("/api/auth/google", {
       method: "POST",
@@ -15,16 +15,18 @@ async function login(token, setName) {
 
     const json = await response.json();
     setName(json.user.name);
+    setEmail(json.user.email);
+    setLogs(json.logs);
   } catch (error) {
     console.error(error.message);
   }
 }
 
-export default function Login({setName}) {
+export default function Login({setName, setEmail, setLogs}) {
   return (
     <GoogleLogin
       onSuccess={(credentialResponse) => {
-        login(credentialResponse, setName);
+        login(credentialResponse, setName, setEmail, setLogs);
       }}
       onError={() => {
         console.log("Login Failed");

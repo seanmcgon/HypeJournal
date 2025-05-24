@@ -26,6 +26,8 @@
     "nodemon": "^3.1.10"
   },
   "dependencies": {
-    "cal-heatmap": "^4.2.4"
+    "cal-heatmap": "^4.2.4",
+    "mongodb": "6.16",
+    "react-spinners": "^0.17.0"
   }
 }

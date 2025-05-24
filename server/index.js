@@ -3,13 +3,21 @@ const express = require("express");
 const cors = require("cors");
 const { OAuth2Client } = require("google-auth-library");
 const { Mistral } = require("@mistralai/mistralai");
+const { MongoClient } = require("mongodb");
 
 const app = express();
 app.use(cors());
 app.use(express.json());
+
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+
 const apiKey = process.env.MISTRAL_API_KEY;
 const mistralClient = new Mistral({ apiKey: apiKey });
+
+const uri = process.env.MONGODB_URI;
+const mongoClient = new MongoClient(uri);
+const database = mongoClient.db("logs");
+const logs = database.collection("logs");
 
 app.post("/api/auth/google", async (req, res) => {
   const { token } = req.body;
@@ -27,11 +35,12 @@ app.post("/api/auth/google", async (req, res) => {
     // - Look up user in DB with `sub` (Google user ID) or `email`
     // - Create a new user if they don't exist
     // - Start a session or issue your own JWT/cookie
+    const docs = await logs.find({ user: email }).toArray();
 
-    // For demo:
     res.json({
       message: "Google login successful",
       user: { email, name, picture },
+      logs: docs,
     });
   } catch (err) {
     console.error(err);
@@ -40,7 +49,7 @@ app.post("/api/auth/google", async (req, res) => {
 });
 
 app.post("/api/task", async (req, res) => {
-  const { task } = req.body;
+  const { task, email } = req.body;
 
   try {
     const chatResponse = await mistralClient.chat.complete({
@@ -57,8 +66,20 @@ app.post("/api/task", async (req, res) => {
       ],
     });
 
+    await logs.insertOne({
+      user: email,
+      message: task,
+      timestamp: (() => {
+        const d = new Date();
+        d.setHours(0, 0, 0, 0);
+        return d.getTime();
+      })(),
+    });
+    const docs = await logs.find({ user: email }).toArray();
+
     res.json({
       message: chatResponse.choices[0].message.content,
+      logs: docs,
     });
     // res.json({
     //   message: "Hell yeah, you did! That's fucking awesome, you grabbed life by the handlebars and rode that bitch! Let's fucking goooooo!!! This is a test to check long responses",
