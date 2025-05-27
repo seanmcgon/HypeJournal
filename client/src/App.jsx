@@ -12,6 +12,24 @@ function App() {
   const [logs, setLogs] = useState([]);
   const [response, setResponse] = useState("");
   const [loading, setLoading] = useState(false);
+  const [yrSelect, setYrSelect] = useState(new Date().getFullYear());
+
+  const filteredLogsCount = logs.filter((doc) => {
+    const year = new Date(doc.timestamp).getFullYear();
+    return year === yrSelect;
+  }).length;
+
+  const minYear =
+    logs.length > 0
+      ? Math.min(...logs.map((doc) => new Date(doc.timestamp).getFullYear()))
+      : null;
+
+  const yearOptions = [];
+  if (minYear) {
+    for (let i = new Date().getFullYear() - 1; i >= minYear; --i) {
+      yearOptions.push(i);
+    }
+  }
 
   return (
     <>
@@ -32,7 +50,28 @@ function App() {
             )}
             {name && (
               <div className="flex flex-col items-center">
-                <Tracker logs={logs} />
+                <div className="flex flex-row items-center mt-4 mb-2 gap-4">
+                  <p className="m-0 leading-none inline">
+                    {`${filteredLogsCount} ${
+                      filteredLogsCount === 1 ? "activity" : "activities"
+                    } logged ${
+                      yrSelect === new Date().getFullYear()
+                        ? "this year"
+                        : `in ${yrSelect}`
+                    }`}
+                  </p>
+                  <select
+                    className="rounded-md border border-fuchsia-400 bg-gray-800 text-white px-3 py-1 focus:outline-none focus:ring-2 focus:ring-fuchsia-400 transition"
+                    value={yrSelect}
+                    onChange={(e) => setYrSelect(Number(e.target.value))}
+                  >
+                    <option value={new Date().getFullYear()}>
+                      {new Date().getFullYear()}
+                    </option>
+                    {yearOptions.map(year => <option value={year}>{year}</option>)}
+                  </select>
+                </div>
+                <Tracker logs={logs} year={yrSelect} />
                 <div className="w-full max-w-lg bg-gray-800 shadow-md rounded-lg p-6 text-center">
                   <h2 className="text-2xl font-semibold text-white mb-4">
                     Hey {name}!

@@ -8,9 +8,8 @@ function label(timestamp, value, dayjsDate) {
   } completed on ${dayjsDate.format("MMMM D")}`;
 }
 
-export default function Tracker({ logs }) {
+export default function Tracker({ logs, year }) {
   const cal = useRef(new CalHeatmap());
-  const year = new Date().getFullYear();
   cal.current.paint(
     {
       domain: { type: "month", gutter: 2 },
@@ -36,6 +35,6 @@ export default function Tracker({ logs }) {
   );
 
   return (
-    <div id="cal-heatmap" className="m-6 p-2 rounded-lg bg-gray-800"></div>
+    <div id="cal-heatmap" className="m-6 mt-0 p-2 rounded-lg bg-gray-800"></div>
   );
 }
