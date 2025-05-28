@@ -30,7 +30,6 @@ app.get('/{*splat}', (req, res) => {
 
 app.post("/api/auth/google", async (req, res) => {
   const { token } = req.body;
-  console.log("Backend expecting client ID:", process.env.GOOGLE_CLIENT_ID);
 
   try {
     const ticket = await client.verifyIdToken({
@@ -40,6 +39,8 @@ app.post("/api/auth/google", async (req, res) => {
 
     const payload = ticket.getPayload();
     const { sub, email, name, picture } = payload;
+
+    console.log("Got this:", email);
 
     // You can now:
     // - Look up user in DB with `sub` (Google user ID) or `email`
