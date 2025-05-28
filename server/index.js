@@ -30,7 +30,7 @@ app.get('/{*splat}', (req, res) => {
 
 app.post("/api/auth/google", async (req, res) => {
   const { token } = req.body;
-  console.log("Received token:", token);
+  console.log("Backend expecting client ID:", process.env.GOOGLE_CLIENT_ID);
 
   try {
     const ticket = await client.verifyIdToken({
