@@ -30,6 +30,7 @@ app.get('/{*splat}', (req, res) => {
 
 app.post("/api/auth/google", async (req, res) => {
   const { token } = req.body;
+  console.log("Received token:", token);
 
   try {
     const ticket = await client.verifyIdToken({
