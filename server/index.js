@@ -1,6 +1,7 @@
 require("dotenv").config({ path: __dirname + "/.env" });
 const express = require("express");
 const cors = require("cors");
+const path = require("path");
 const { OAuth2Client } = require("google-auth-library");
 const { Mistral } = require("@mistralai/mistralai");
 const { MongoClient } = require("mongodb");
@@ -18,6 +19,14 @@ const uri = process.env.MONGODB_URI;
 const mongoClient = new MongoClient(uri);
 const database = mongoClient.db("logs");
 const logs = database.collection("logs");
+
+// Serve static files from the client build
+app.use(express.static(path.join(__dirname, "../client/dist")));
+
+// Serve frontend for all other routes
+app.get('/{*splat}', (req, res) => {
+  res.sendFile(path.join(__dirname, "../client/dist/index.html"));
+});
 
 app.post("/api/auth/google", async (req, res) => {
   const { token } = req.body;
@@ -81,9 +90,6 @@ app.post("/api/task", async (req, res) => {
       message: chatResponse.choices[0].message.content,
       logs: docs,
     });
-    // res.json({
-    //   message: "Hell yeah, you did! That's fucking awesome, you grabbed life by the handlebars and rode that bitch! Let's fucking goooooo!!! This is a test to check long responses",
-    // });
   } catch (err) {
     console.error(err);
     res.status(401).json({ error: "Error getting AI response" });
