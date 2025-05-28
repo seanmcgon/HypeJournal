@@ -17,6 +17,7 @@ const mistralClient = new Mistral({ apiKey: apiKey });
 
 const uri = process.env.MONGODB_URI;
 const mongoClient = new MongoClient(uri);
+await mongoClient.connect();
 const database = mongoClient.db("logs");
 const logs = database.collection("logs");
 
@@ -39,8 +40,6 @@ app.post("/api/auth/google", async (req, res) => {
 
     const payload = ticket.getPayload();
     const { sub, email, name, picture } = payload;
-
-    console.log("Got this:", email);
 
     // You can now:
     // - Look up user in DB with `sub` (Google user ID) or `email`
