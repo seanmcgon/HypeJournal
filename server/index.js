@@ -17,7 +17,6 @@ const mistralClient = new Mistral({ apiKey: apiKey });
 
 const uri = process.env.MONGODB_URI;
 const mongoClient = new MongoClient(uri);
-await mongoClient.connect();
 const database = mongoClient.db("logs");
 const logs = database.collection("logs");
 
@@ -45,6 +44,7 @@ app.post("/api/auth/google", async (req, res) => {
     // - Look up user in DB with `sub` (Google user ID) or `email`
     // - Create a new user if they don't exist
     // - Start a session or issue your own JWT/cookie
+    await mongoClient.connect();
     const docs = await logs.find({ user: email }).toArray();
 
     res.json({
