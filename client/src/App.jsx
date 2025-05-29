@@ -34,7 +34,7 @@ function App() {
   return (
     <>
       <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
-        <div className="App min-h-screen bg-gray-900 p-6 flex flex-col items-center overflow-x-hidden">
+        <div className="App min-h-screen bg-gray-900 p-6 flex flex-col items-center overflow-x-hidden inset-shadow-[0_0_100px_rgba(217,70,239,0.2)]">
           <h1 className="text-5xl font-bold text-fuchsia-500 text-shadow-md/60 text-shadow-sky-500">
             HypeJournal
           </h1>
@@ -68,7 +68,9 @@ function App() {
                     <option value={new Date().getFullYear()}>
                       {new Date().getFullYear()}
                     </option>
-                    {yearOptions.map(year => <option value={year}>{year}</option>)}
+                    {yearOptions.map((year) => (
+                      <option value={year}>{year}</option>
+                    ))}
                   </select>
                 </div>
                 <Tracker logs={logs} year={yrSelect} />

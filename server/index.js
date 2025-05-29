@@ -24,7 +24,7 @@ const logs = database.collection("logs");
 app.use(express.static(path.join(__dirname, "../client/dist")));
 
 // Serve frontend for all other routes
-app.get('/{*splat}', (req, res) => {
+app.get("/{*splat}", (req, res) => {
   res.sendFile(path.join(__dirname, "../client/dist/index.html"));
 });
 
@@ -81,8 +81,10 @@ app.post("/api/task", async (req, res) => {
       message: task,
       timestamp: (() => {
         const d = new Date();
-        d.setHours(0, 0, 0, 0);
-        return d.getTime();
+        const year = d.getFullYear();
+        const month = String(d.getMonth() + 1).padStart(2, "0");
+        const day = String(d.getDate()).padStart(2, "0");
+        return `${year}-${month}-${day}`;
       })(),
     });
     const docs = await logs.find({ user: email }).toArray();
