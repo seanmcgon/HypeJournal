@@ -59,7 +59,7 @@ app.post("/api/auth/google", async (req, res) => {
 });
 
 app.post("/api/task", async (req, res) => {
-  const { task, email } = req.body;
+  const { task, email, dateString } = req.body;
 
   try {
     const chatResponse = await mistralClient.chat.complete({
@@ -79,13 +79,7 @@ app.post("/api/task", async (req, res) => {
     await logs.insertOne({
       user: email,
       message: task,
-      timestamp: (() => {
-        const d = new Date();
-        const year = d.getFullYear();
-        const month = String(d.getMonth() + 1).padStart(2, "0");
-        const day = String(d.getDate()).padStart(2, "0");
-        return `${year}-${month}-${day}`;
-      })(),
+      timestamp: dateString,
     });
     const docs = await logs.find({ user: email }).toArray();
 

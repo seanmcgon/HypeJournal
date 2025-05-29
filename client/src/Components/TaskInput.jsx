@@ -16,12 +16,15 @@ export default function TaskInput({ setResponse, email, setLogs, setLoading }) {
     setLoading(true);
 
     try {
+      const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      const dateString = new Date().toLocaleDateString("en-CA", { timeZone });
+
       const response = await fetch("/api/task", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ task: temp, email: email }),
+        body: JSON.stringify({ task: temp, email: email, dateString: dateString }),
       });
       if (!response.ok) {
         throw new Error(`Response status: ${response.status}`);
@@ -38,7 +41,7 @@ export default function TaskInput({ setResponse, email, setLogs, setLoading }) {
       });
     } catch (error) {
       console.error(error.message);
-    }    
+    }
   }
 
   return (
