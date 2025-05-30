@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 
 export default function HypeResponse({ response }) {
   return (
-    <div className="w-full max-w-lg pt-6">
+    <div className="w-full flex flex-col items-center pt-6 max-w-11/12">
       <BorderRevealBox>
         <div className="relative z-10 text-white font-bold text-center text-xl">{response}</div>
       </BorderRevealBox>
@@ -25,10 +25,11 @@ function BorderRevealBox({ children }) {
   }, []);
 
   return (
-    <div className="relative w-[512px] h-[150px]">
+    <div className="relative w-full h-auto">
       <svg
         className="absolute top-0 left-0 w-full h-full rounded-2xl"
         viewBox="0 0 512 150"
+        preserveAspectRatio="none"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
       >
@@ -41,7 +42,7 @@ function BorderRevealBox({ children }) {
           rx="16"
           ry="16"
           stroke="#d946ef"
-          strokeWidth="2"
+          strokeWidth="3"
           style={{
             filter: "drop-shadow(0 0 8px #d946ef)",
           }}

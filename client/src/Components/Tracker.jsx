@@ -35,6 +35,6 @@ export default function Tracker({ logs, year }) {
   );
 
   return (
-    <div id="cal-heatmap" className="m-6 mt-0 p-2 rounded-lg bg-gray-800"></div>
+    <div id="cal-heatmap" className="m-6 mt-0 p-2 rounded-lg bg-gray-800 overflow-x-auto px-2 max-w-11/12 md:max-w-full"></div>
   );
 }

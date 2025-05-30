@@ -34,11 +34,11 @@ function App() {
   return (
     <>
       <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
-        <div className="App min-h-screen bg-gray-900 p-6 flex flex-col items-center overflow-x-hidden inset-shadow-[0_0_100px_rgba(217,70,239,0.2)]">
+        <div className="App min-h-screen max-w-screen bg-gray-900 p-6 flex flex-col items-center inset-shadow-[0_0_100px_rgba(217,70,239,0.2)]">
           <h1 className="text-5xl font-bold text-fuchsia-500 text-shadow-md/60 text-shadow-sky-500">
             HypeJournal
           </h1>
-          <div className="flex flex-col items-center justify-center p-4 min-w-screen">
+          <div className="flex flex-col items-center justify-center p-4 w-7/12">
             {!name && (
               <div className="w-full max-w-md bg-white shadow-md rounded-lg p-6 m-4 flex flex-col items-center">
                 <Login
@@ -49,7 +49,7 @@ function App() {
               </div>
             )}
             {name && (
-              <div className="flex flex-col items-center">
+              <div className="flex flex-col items-center max-w-screen">
                 <div className="flex flex-row items-center mt-4 mb-2 gap-4">
                   <p className="m-0 leading-none inline">
                     {`${filteredLogsCount} ${
@@ -74,7 +74,7 @@ function App() {
                   </select>
                 </div>
                 <Tracker logs={logs} year={yrSelect} />
-                <div className="w-full max-w-lg bg-gray-800 shadow-md rounded-lg p-6 text-center">
+                <div className="w-full max-w-11/12 bg-gray-800 shadow-md rounded-lg p-6 text-center">
                   <h2 className="text-2xl font-semibold text-white mb-4">
                     Hey {name}!
                   </h2>
