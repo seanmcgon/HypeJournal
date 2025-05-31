@@ -55,7 +55,6 @@ _Note: using free-tier services, so expect occasional delays or cold starts._
 ## 🧭 Roadmap
 
 - 📖 View logged activities by clicking a specific date on the calendar
-- 📱 Optimize and fix layout issues on smaller/mobile screens
 
 ## 📄 License
 
