@@ -38,9 +38,9 @@ function App() {
           <h1 className="text-5xl font-bold text-fuchsia-500 text-shadow-md/60 text-shadow-sky-500">
             HypeJournal
           </h1>
-          <div className="flex flex-col items-center justify-center">
+          <div className="flex flex-col items-center justify-center lg:w-1/2 md:w-2/3">
             {!name && (
-              <div className="w-full bg-white shadow-md rounded-lg p-6 m-4 flex flex-col items-center">
+              <div className="w-auto bg-white shadow-md rounded-lg p-6 m-4 flex flex-col items-center">
                 <Login
                   setName={setName}
                   setEmail={setEmail}
